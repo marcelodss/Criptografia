@@ -1,0 +1,10 @@
+*.pem
+*.bin
+*.*crypt
+*.json
+*.*development
+*__pycache__/
+.vscode
+.vscode/
+.git
+venv/
