@@ -1,0 +1,44 @@
+Fonte:
+https://github.com/PowerShell/Win32-OpenSSH
+
+
+Install:
+msiexec /i <path to openssh.msi>
+
+Entrar com senha
+ssh domain\user@host
+
+CONFIGURAR CLIENTE
+Entrar com chaves ssh
+1. Gere um par de chaves no cliente (de preferência com uma senha):
+ssh-keygen -t rsa -f .\.ssh\nome_arquivo_da_sua_preferencia -C "Comentários sobre as chaves"
+
+2. Registre a chave privada com ssh-agent (opcional, para experiência de logon único)
+net start ssh-agent
+ssh-add id_rsa
+
+3. Entrar usando chave privada
+ssh -i .\id_rsa user@host(usuário do grupo de trabalho)
+ssh -i .\id_rsa -l user@domain host(usuário do domínio)
+
+
+
+CONFIGURAR SERVIDOR (sshd)
+1. Acrescente o conteúdo de id_rsa.pub(chave pública do cliente) ao seguinte arquivo 
+no diretório do usuário correspondente %systemdrive%\Users\<user>\.ssh\authorized_keys(crie um se necessário).
+
+2. Verifique novamente as permissões de acesso em author_keys (somente Sistema, 
+Administradores e proprietário podem ter acesso). icacls %systemdrive%\Users\<user>\.ssh\authorized_keys
+
+>>> em C:\ProgramData\ssh\sshd_config DO SERVIDOR altere as linhas:
+PubkeyAuthentication yes
+PasswordAuthentication no
+#Match Group administrators
+#       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+
+>>> em C:\Users\seu_usuario\.ssh DO SERVIDOR crie um arquivo texto (sem a extensão txt) com o nome 
+authorized_keys e cole sua chave publica nele
+
+ACESSO CLIENTE / SERVIDOR
+>>> para acessar o servidor a partir do cliente, use:
+ssh dominio\usuario@ip_host -i .\.ssh\arquivo_com_chave_privada

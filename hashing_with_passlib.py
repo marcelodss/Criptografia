@@ -2,6 +2,8 @@ from passlib.context import CryptContext
 
 """
 Fonte: https://jobu.com.br/2021/06/26/como-esconder-uma-senha-em-um-script-python/
+
+Ver: https://www.geeksforgeeks.org/how-to-hash-passwords-in-python/
 """
 
 """
@@ -77,3 +79,9 @@ context = CryptContext(
 print(context.hash(to_hash))
 hashed_password = context.hash(to_hash)
 print(context.verify(to_hash, hashed_password))
+
+"""Argon2 é uma função de hashing de senha que foi selecionada como a 
+vencedora do Password Hashing Competition (PHC) em 2015. Ele foi projetado 
+para ser resistente a ataques como ataques de dicionário, ataques de força bruta 
+e ataques de pré-computação."""
+
