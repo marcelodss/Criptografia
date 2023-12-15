@@ -12,8 +12,17 @@ https://techjogging.com/store_sensitive_data_locally_windows_using_python.html
 
 Usando keyring para dados sensíveis do settings.py do Django:
 - No Gerenciador de Credencias adicione uma credencial genérica (string) formatada como Json, com os dados que necessitar,
-como no exemplo abaixo:
-{"NAME":"NAME_DB", "USER":"user_name", "PASSWORD": "password", "HOST": "SERVIDOR\INSTANCIA", "SECRET_KEY": "django_cod_secret_key"}
+como nos exemplos abaixo:
+
+1- conexões para o banco de dados
+{"NAME":"NAME_DB", "USER":"user_name", "PASSWORD": "password", "HOST": "SERVIDOR\INSTANCIA"}
+
+2- secret key do django
+{"SECRET_KEY": "django-secret_key_xyz"}
+
+3-
+etc.
+
 """
 def credentials(service_name):
     credential_data = {}
@@ -30,7 +39,8 @@ def credentials(service_name):
         print(f'\nErro! {e}\n')
         return credential_data
 
-service_name = 'aj30'
+service_name = 'service_name'
 service = credentials(service_name)
-print('service_name', service_name, service.get('HOST', 'host não encontrado'))
+print('service_name', service_name, service.get('HOST', None))
+
 
