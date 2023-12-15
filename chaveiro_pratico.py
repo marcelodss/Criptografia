@@ -28,7 +28,7 @@ Usando keyring para dados sensíveis do settings.py do Django:
 """
 
 try:
-    service_name = "service_name"
+    service_name = "aj30"
     if not keyring.get_credential(service_name, None):
         print(f"service name {service_name} não existe no gerenciador de senhas." )
     else:
@@ -36,7 +36,7 @@ try:
         uid=credential.username
         pwd=credential.password
         aj30 = ast.literal_eval(pwd)
-        print(type(aj30['HOST']))
+        print(type(aj30['HOST']), aj30['HOST'])
 
 except keyring.errors.KeyringError as erro_keyring:
     print(f'\nErro no chaveiro! {erro_keyring}\n')
