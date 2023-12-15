@@ -38,9 +38,6 @@ try:
         aj30 = ast.literal_eval(pwd)
         print(type(aj30['HOST']))
 
-    
-    
-    
 except keyring.errors.KeyringError as erro_keyring:
     print(f'\nErro no chaveiro! {erro_keyring}\n')
     # delete_keyring(service_name, uid)
