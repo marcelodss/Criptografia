@@ -10,37 +10,27 @@ veja:
 https://stackoverflow.com/questions/14756352/how-is-python-keyring-implemented-on-windows
 https://techjogging.com/store_sensitive_data_locally_windows_using_python.html
 
-"""
-def create_keyring(service_name):
-    print('='*12, 'informe usuário e senha', '='*12)
-    username = input("Username: ")
-    password = getpass.getpass()
-    keyring.set_password(service_name, username, password)
-
-
-def delete_keyring(service_name, user_name):
-    keyring.delete_password(service_name, user_name)
-
-""""
 Usando keyring para dados sensíveis do settings.py do Django:
-- No exemplo abaixo, os dados são gravados no gerenciador como uma string formatada como Json:
+- No Gerenciador de Credencias adicione uma credencial genérica (string) formatada como Json, com os dados que necessitar,
+como no exemplo abaixo:
 {"NAME":"NAME_DB", "USER":"user_name", "PASSWORD": "password", "HOST": "SERVIDOR\INSTANCIA", "SECRET_KEY": "django_cod_secret_key"}
 """
+def credentials(service_name):
+    credential_data = {}
+    try:
+        if keyring.get_credential(service_name, None):
+            credential = keyring.get_credential(service_name, None)
+            credential_data = ast.literal_eval(credential.password)
 
-try:
-    service_name = "aj30"
-    if not keyring.get_credential(service_name, None):
-        print(f"service name {service_name} não existe no gerenciador de senhas." )
-    else:
-        credential = keyring.get_credential(service_name, None)
-        uid=credential.username
-        pwd=credential.password
-        aj30 = ast.literal_eval(pwd)
-        print(type(aj30['HOST']), aj30['HOST'])
+        return credential_data
+    except keyring.errors.KeyringError as erro_keyring:
+        print(f'\nErro no chaveiro! {erro_keyring}\n')
+        return credential_data
+    except BaseException as e:
+        print(f'\nErro! {e}\n')
+        return credential_data
 
-except keyring.errors.KeyringError as erro_keyring:
-    print(f'\nErro no chaveiro! {erro_keyring}\n')
-    # delete_keyring(service_name, uid)
-except BaseException as e:
-    print(f'\nErro! {e}\n')
-    # delete_keyring(service_name, uid)
+service_name = 'aj30'
+service = credentials(service_name)
+print('service_name', service_name, service.get('HOST', 'host não encontrado'))
+
